@@ -71,7 +71,8 @@ export default function final () {
     })
 
     collides('mage', 'ghost', (k, s) => {
-        camShake(6)
+        camShake(10)
+        s.move(4000, 0)
 
         if (SHIELD === 3) {
             s.changeSprite('boss2')

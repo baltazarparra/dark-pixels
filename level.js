@@ -115,6 +115,7 @@ export default function level () {
     })
 
     collides('mage', 'bad', (k, s) => {
+        s.move(1500, 0)
         camShake(6)
 
         if (SHIELD) {
@@ -133,6 +134,7 @@ export default function level () {
     })
 
     collides('mage', 'badb', (k, s) => {
+        s.move(1500, 0)
         camShake(6)
 
         if (SHIELDB) {
