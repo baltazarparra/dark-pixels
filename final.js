@@ -1,6 +1,6 @@
 import k from './kaboom.js'
 
-export default function level () {
+export default function final () {
 
     const player = add([
         sprite('dark'),
@@ -21,48 +21,27 @@ export default function level () {
         '                                                                                 ',
         '                                                                                 ',
         '                                                                                 ',
-        '           >>                                                                    ',
-        '        >                                     #  =#%                             ',
-        '            #     >>>                         =   ==>                            ',
-        '            =>>                                        >                 =>      ',
-        '       = =       >                       ===>         =              #           ',
-        '      =  >>        >              =#   >         >  =       &       #>>          ',
-        '   = ~      =        =   =           +=    #   =        #          ==            ',
-        '=============   ==========   =======>>=    ======================================',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                          >>                                                     ',
+        '             >>>  >>   >                                                         ',
+        '         >>                                   #                                  ',
+        '=================================================================================',
     ]
-
-    let hasGem = false
 
     const levelConfig = {
         width: 20,
         height: 20,
         '=': [sprite('brick'), solid(), 'wall'],
         '>': [sprite('block'), solid(), 'wall'],
-        '$': [sprite('gem'), solid()],
-        '#': [sprite('ghost'), solid(), 'ghost', body(), 'danger', { dir: -1, timer: 0 }],
-        '~': [sprite('bad'), solid(), 'bad', body(), 'danger', { dir: 1, timer: 1 }],
-        '+': [sprite('bad'), solid(), 'badb', body(), 'danger', { dir: -1, timer: 3 }],
-        '%': [sprite('gem'), 'gem'],
-        '&': [sprite('portal'), 'portal', scale(2)]
+        '#': [sprite('boss1'), solid(), scale(1.5), 'ghost', body(), 'danger', { dir: -1, timer: 0 }],
     }
 
     addLevel(map, levelConfig)
     
     add([sprite('bg'), layer('bg')])
-
-    add([
-        pos(10,310),
-        text('DARK PIXELS', 20, {
-            width: 1000
-        })
-    ])
-
-    add([
-        pos(10,100),
-        text('right and left = walk | space = jump | down = dark mage | up = backdash', 8, {
-            width: 1000
-        })
-    ])
 
     player.action(() => {
         camPos(player.pos)
@@ -71,8 +50,7 @@ export default function level () {
     let MOVE_SPEED = 90
     let JUMP_FORCE = 220
     let DIR = 'right'
-    let SHIELD = true
-    let SHIELDB = true
+    let SHIELD = 4
 
     function attack(p) {
         const obj = add([sprite('mage'), pos(p), 'mage'])
@@ -88,94 +66,39 @@ export default function level () {
         })
     }
     
-    player.overlaps('gem', (gem) => {
-        destroy(gem)
-        JUMP_FORCE = 420
-        hasGem = true
-    })
-
-    player.overlaps('portal', () => {
-        if (hasGem) {
-            go('final')
-        } else {
-            go('die')
-        }
-    })
-
     player.collides('danger', () => {
         go('die')
     })
 
     collides('mage', 'ghost', (k, s) => {
-        camShake(4)
-        wait(1, () => {
-            destroy(k)
-        })
-        destroy(s)
-    })
-
-    collides('mage', 'bad', (k, s) => {
         camShake(6)
 
-        if (SHIELD) {
-            s.changeSprite('bad-half')
+        if (SHIELD === 3) {
+            s.changeSprite('boss2')
             wait(1, () => {
-                SHIELD = false
+                SHIELD = SHIELD - 1
             })
         }
 
-        if (!SHIELD) {
-            wait(1.5, () => {
-                destroy(k)
-            })
-            destroy(s)
-        }
-    })
-
-    collides('mage', 'badb', (k, s) => {
-        camShake(6)
-
-        if (SHIELDB) {
-            s.changeSprite('bad-half')
+        if (SHIELD === 2) {
+            s.changeSprite('boss3')
             wait(1, () => {
-                SHIELDB = false
+                SHIELD = SHIELD - 1
             })
         }
 
-        if (!SHIELDB) {
-            wait(1.5, () => {
-                destroy(k)
-            })
+        if (SHIELD === 1) {
             destroy(s)
+            go('win')
         }
     })
 
     action('ghost', (s) => {
-        s.move(s.dir * 80, 0)
-        s.timer -= dt()
-        if (s.timer <= 0) {
-            s.dir = - s.dir
-            s.timer = rand(10)
-            s.jump(300, 0)
-        }
-    })
-
-    action('bad', (s) => {
-        s.move(s.dir * 40, 0)
+        s.move(s.dir * 100, 0)
         s.timer -= dt()
         if (s.timer <= 0) {
             s.dir = - s.dir
             s.timer = rand(4)
-            s.jump(300, 0)
-        }
-    })
-
-    action('badb', (s) => {
-        s.move(s.dir * 20, 0)
-        s.timer -= dt()
-        if (s.timer <= 0) {
-            s.dir = - s.dir
-            s.timer = rand(6)
             s.jump(350, 0)
         }
     })

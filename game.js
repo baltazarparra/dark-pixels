@@ -4,9 +4,13 @@ import UI from './ui.js'
 import LEVEL from './level.js'
 import WIN from './win.js'
 import DIE from './die.js'
+import FINAL from './final.js'
 
 loadRoot('./imgs/')
 loadSprite('mage', 'mage.png')
+loadSprite('boss1', 'boss1.png')
+loadSprite('boss2', 'boss2.png')
+loadSprite('boss3', 'boss3.png')
 loadSprite('bad', 'bad.png')
 loadSprite('bad-half', 'bad-half.png')
 loadSprite('brick', 'brick.png')
@@ -25,5 +29,6 @@ scene('start', UI)
 scene('game', LEVEL)
 scene('win', WIN)
 scene('die', DIE)
+scene('final', FINAL)
 
 start('start') 
