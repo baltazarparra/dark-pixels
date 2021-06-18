@@ -159,7 +159,7 @@ scene('game', () => {
     })
 
     keyPress('down', () => {
-        spawn(player.pos.add(player.dir.scale(20)))
+        spawn(player.pos.add(player.dir.scale(15)))
     })
 
 	player.action(() => {
