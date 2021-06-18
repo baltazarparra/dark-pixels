@@ -27,14 +27,14 @@ scene('game', () => {
         '    #                                                                            ',
         '                             #                                                   ',
         '                                                #                                ',
-        '                                                            #                    ',
-        '           #                                                                     ',
-        '        >  >>                #                #  =#%                             ',
+        '           #                                                #                    ',
+        '           >>                                                                    ',
+        '        >                    #                #  =#%                             ',
         '             #    >>>                         =   ==      #                      ',
-        '             >>                                                   #              ',
-        '   #             >                       ===     =                               ',
-        '           >>      >              =   =>             &                           ',
-        '#                        =        ==  =    #   =                                 ',
+        '            =>>                                                   #              ',
+        '   #   = =       >                       ===     =                               ',
+        '      =  >>        >              =   =>             &                           ',
+        '#  =        =        =   =        ==  =    #   =                                 ',
         '=============   ==========   =======>>=    ======================================',
     ]
 
@@ -88,10 +88,10 @@ scene('game', () => {
     })
 
     const MOVE_SPEED = 90
-    const JUMP_FORCE = 280
+    const JUMP_FORCE = 220
 
     function spawn(p) {
-        const obj = add([sprite('mage'), pos(p), 'mage'])
+        const obj = add([sprite('mage'), scale(1.5), pos(p), 'mage'])
         wait(1, () => {
             destroy(obj)
         })
@@ -123,12 +123,12 @@ scene('game', () => {
     })
 
     action('danger', (s) => {
-        s.move(s.dir * 60, 0)
+        s.move(s.dir * 80, 0)
         s.timer -= dt()
         if (s.timer <= 0) {
             s.dir = - s.dir
-            s.timer = rand(5)
-            s.jump(400, 0)
+            s.timer = rand(10)
+            s.jump(300, 0)
         }
     })
 
@@ -159,7 +159,7 @@ scene('game', () => {
     })
 
     keyPress('down', () => {
-        spawn(player.pos.add(player.dir.scale(10)))
+        spawn(player.pos.add(player.dir.scale(20)))
     })
 
 	player.action(() => {
