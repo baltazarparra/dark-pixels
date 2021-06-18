@@ -50,7 +50,7 @@ export default function final () {
     let MOVE_SPEED = 90
     let JUMP_FORCE = 220
     let DIR = 'right'
-    let SHIELD = 4
+    let SHIELD = 3
 
     function attack(p) {
         const obj = add([sprite('mage'), pos(p), 'mage'])
