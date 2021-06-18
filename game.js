@@ -1,20 +1,21 @@
 kaboom({
     global: true,
     fullscreen: true,
-    scale: 2,
+    scale: 1.5,
     debug: true,
     clearColor: [0,0,0,1]
 })
 
-loadRoot('https://i.imgur.com/')
-loadSprite('coin', 'wbKxhcd.png')
-loadSprite('brick', 'pogC9x5.png')
-loadSprite('block', 'fVscIbn.png')
-loadSprite('mario', 'SvV4ueD.png')
-loadSprite('mushroom', 'Wb1qfhK.png')
-loadSprite('gem', 'gqVoI2b.png')
-loadSprite('portal', 'uaUm9sN.png')
-loadSprite('bg', 'S98Jvpx.png')
+loadRoot('./imgs/')
+loadSprite('mage', 'mage.png')
+loadSprite('brick', 'brick.png')
+loadSprite('block', 'block.png')
+loadSprite('dark', 'dark.png')
+loadSprite('dark-reverse', 'dark-reverse.png')
+loadSprite('ghost', 'ghost.png')
+loadSprite('gem', 'key.png')
+loadSprite('portal', 'portal.png')
+loadSprite('bg', 'bg.png')
 
 scene('game', () => {
     
@@ -22,20 +23,19 @@ scene('game', () => {
 
     const map = [
         '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '        >  >>                                 #  =#%                             ',
-        '                  >>>                         =  ==                              ',
-        '             >                                                                   ',
-        '                 >                       ===     =                               ',
-        '                   >              =   =>                                         ',
-        '                                  ==  =    #   =     &                           ',
-        '============================>=======>>===========================================',
+        '                                                               #                 ',
+        '    #                                                                            ',
+        '                             #                                                   ',
+        '                                                #                                ',
+        '                                                            #                    ',
+        '           #                                                                     ',
+        '        >  >>                #                #  =#%                             ',
+        '             #    >>>                         =   ==      #                      ',
+        '             >>                                                   #              ',
+        '   #             >                       ===     =                               ',
+        '           >>      >              =   =>             &                           ',
+        '#                        =        ==  =    #   =                                 ',
+        '=============   ==========   =======>>=    ======================================',
     ]
 
     let hasGem = false
@@ -47,22 +47,35 @@ scene('game', () => {
     const levelConfig = {
         width: 20,
         height: 20,
-        '=': [sprite('block'), solid(), scale(0.5), 'wall'],
-        '>': [sprite('brick'), solid(), 'wall'],
-        '$': [sprite('coin'), solid()],
-        '#': [sprite('mushroom'), solid(), 'mushroom', body(), 'danger', { dir: -1, timer: 0 }],
-        '%': [sprite('gem'), 'gem', scale(0.5)],
-        '&': [sprite('portal'), 'portal']
+        '=': [sprite('brick'), solid(), 'wall'],
+        '>': [sprite('block'), solid(), 'wall'],
+        '$': [sprite('gem'), solid()],
+        '#': [sprite('ghost'), solid(), 'ghost', body(), 'danger', { dir: -1, timer: 0 }],
+        '%': [sprite('gem'), 'gem'],
+        '&': [sprite('portal'), 'portal', scale(2)]
     }
 
     addLevel(map, levelConfig)
     
     add([sprite('bg'), layer('bg')])
 
+    add([
+        pos(10,310),
+        text('DARK PIXELS', 20, {
+            width: 1000
+        })
+    ])
+
+    add([
+        pos(10,100),
+        text('right and left = walk | space = jump | down = dark mage | up = backdash', 8, {
+            width: 1000
+        })
+    ])
+
     const player = add([
-        sprite('mario'),
+        sprite('dark'),
         solid(),
-        scale(0.5),
         pos(400,200),
         body(),
         {
@@ -78,7 +91,7 @@ scene('game', () => {
     const JUMP_FORCE = 280
 
     function spawn(p) {
-        const obj = add([sprite('coin'), pos(p), 'coin'])
+        const obj = add([sprite('mage'), pos(p), 'mage'])
         wait(1, () => {
             destroy(obj)
         })
@@ -89,7 +102,7 @@ scene('game', () => {
         hasGem = true
     })
 
-    player.overlaps('portal', (portal) => {
+    player.overlaps('portal', () => {
         if (hasGem) {
             go('win')
         } else {
@@ -97,11 +110,11 @@ scene('game', () => {
         }
     })
 
-    player.collides('danger', (danger) => {
+    player.collides('danger', () => {
         go('lose')
     })
 
-    collides('coin', 'mushroom', (k, s) => {
+    collides('mage', 'ghost', (k, s) => {
         camShake(4)
         wait(1, () => {
             destroy(k)
@@ -124,11 +137,13 @@ scene('game', () => {
     })
 
     keyDown('left', () => {
+        player.changeSprite('dark-reverse')
         player.move(-MOVE_SPEED, 0)
         player.dir = vec2(-1,0)
     })
 
     keyDown('right', () => {
+        player.changeSprite('dark')
         player.move(MOVE_SPEED, 0)
         player.dir = vec2(1,0)
     })
