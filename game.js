@@ -16,6 +16,7 @@ loadSprite('ghost', 'ghost.png')
 loadSprite('gem', 'key.png')
 loadSprite('portal', 'portal.png')
 loadSprite('bg', 'bg.png')
+loadSprite('attack', 'attack.png')
 
 scene('game', () => {
     
@@ -90,10 +91,12 @@ scene('game', () => {
     const MOVE_SPEED = 90
     const JUMP_FORCE = 220
 
-    function spawn(p) {
+    function attack(p) {
         const obj = add([sprite('mage'), pos(p), 'mage'])
-        wait(1, () => {
+        player.changeSprite('attack')
+        wait(0.2, () => {
             destroy(obj)
+            player.changeSprite('dark')
         })
     }
     
@@ -159,7 +162,7 @@ scene('game', () => {
     })
 
     keyPress('down', () => {
-        spawn(player.pos.add(player.dir.scale(15)))
+        attack(player.pos.add(player.dir.scale(15)))
     })
 
 	player.action(() => {
