@@ -23,25 +23,25 @@ scene('game', () => {
 
     const map = [
         '                                                                                 ',
-        '                                                               #                 ',
-        '    #                                                                            ',
-        '                             #                                                   ',
-        '                                                #                                ',
-        '           #                                                #                    ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
         '           >>                                                                    ',
-        '        >                    #                #  =#%                             ',
-        '             #    >>>                         =   ==>     #                      ',
-        '            =>>                                        >          #              ',
-        '   #   = =       >                       ===>         =                          ',
-        '      =  >>        >              =    >         >  =&                           ',
-        '#  =        =        =   =            =    #   =                                 ',
+        '        >                                     #  =#%                             ',
+        '            #     >>>                         =   ==>                            ',
+        '            =>>                                        >                 =>      ',
+        '       = =       >                       ===>         =              #           ',
+        '      =  >>        >     #        =#   >         >  =       &       #>>          ',
+        '   =   #    =        =   =   #   #    =    #   =        #          ==            ',
         '=============   ==========   =======>>=    ======================================',
     ]
 
     let hasGem = false
 
     function respawn() {
-		player.pos = vec2(0, 0)
+		player.pos = vec2(50, 0)
 	}
 
     const levelConfig = {
@@ -76,7 +76,7 @@ scene('game', () => {
     const player = add([
         sprite('dark'),
         solid(),
-        pos(0,100),
+        pos(400,100),
         body(),
         {
             dir: vec2(1,0)
@@ -91,7 +91,7 @@ scene('game', () => {
     const JUMP_FORCE = 220
 
     function spawn(p) {
-        const obj = add([sprite('mage'), scale(1.5), pos(p), 'mage'])
+        const obj = add([sprite('mage'), pos(p), 'mage'])
         wait(1, () => {
             destroy(obj)
         })
@@ -115,7 +115,7 @@ scene('game', () => {
     })
 
     collides('mage', 'ghost', (k, s) => {
-        camShake(4)
+        camShake(6)
         wait(1, () => {
             destroy(k)
         })
