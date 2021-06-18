@@ -94,7 +94,7 @@ scene('game', () => {
     function attack(p) {
         const obj = add([sprite('mage'), pos(p), 'mage'])
         player.changeSprite('attack')
-        wait(0.2, () => {
+        wait(0.4, () => {
             destroy(obj)
             player.changeSprite('dark')
         })
@@ -102,6 +102,7 @@ scene('game', () => {
     
     player.overlaps('gem', (gem) => {
         destroy(gem)
+        JUMP_FORCE = 1220
         hasGem = true
     })
 
