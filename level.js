@@ -76,7 +76,7 @@ export default function level () {
 
     function attack(p) {
         const obj = add([sprite('mage'), pos(p), 'mage'])
-        wait(0.1, () => {
+        wait(0.3, () => {
             destroy(obj)
             if (DIR === 'right') {
                 player.changeSprite('dark')
@@ -209,7 +209,7 @@ export default function level () {
     })
 
     keyPress('down', () => {
-        attack(player.pos.add(player.dir.scale(15)))
+        attack(player.pos.add(player.dir.scale(20)))
         if (DIR === 'right') {
             player.changeSprite('dark-attack')
         }
