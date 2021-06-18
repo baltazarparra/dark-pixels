@@ -20,6 +20,24 @@ loadSprite('portal', 'portal.png')
 loadSprite('bg', 'bg.png')
 loadSprite('attack', 'attack.png')
 
+scene('start', () => {
+    add([
+        pos(10,20),
+        text('DARK PIXELS', 40, {
+            width: 1000
+        })
+    ])
+    add([
+        pos(10,100),
+        text('press spacebar to enter in darkness', 8, {
+            width: 1000
+        })
+    ])
+    keyPress('space', () => {
+        go('game')
+    })
+})
+
 scene('game', () => {
     
     layers(['bg', 'obj'], 'obj')
@@ -192,7 +210,11 @@ scene('game', () => {
 } )
 
 scene('win', () => {
-    add([text('win'), origin('center'), pos(width()/2, height()/2)])
+    add([text('win, press space to refresh'), origin('center'), pos(width()/2, height()/2)])
+    
+    keyPress('space', () => {
+        go('game')
+    })
 })
 
-start('game') 
+start('start') 
