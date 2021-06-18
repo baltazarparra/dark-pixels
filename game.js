@@ -3,6 +3,7 @@ import k from './kaboom.js'
 import UI from './ui.js'
 import LEVEL from './level.js'
 import WIN from './win.js'
+import DIE from './die.js'
 
 loadRoot('./imgs/')
 loadSprite('mage', 'mage.png')
@@ -23,5 +24,6 @@ loadSprite('attack', 'attack.png')
 scene('start', UI)
 scene('game', LEVEL)
 scene('win', WIN)
+scene('die', DIE)
 
 start('start') 

@@ -5,7 +5,7 @@ export default function level () {
     const player = add([
         sprite('dark'),
         solid(),
-        pos(400,100),
+        pos(0,240),
         body(),
         {
             dir: vec2(1,0)
@@ -32,10 +32,6 @@ export default function level () {
     ]
 
     let hasGem = false
-
-    function respawn() {
-		player.pos = vec2(50, 0)
-	}
 
     const levelConfig = {
         width: 20,
@@ -102,12 +98,12 @@ export default function level () {
         if (hasGem) {
             go('win')
         } else {
-            respawn()
+            go('die')
         }
     })
 
     player.collides('danger', () => {
-        respawn()
+        go('die')
     })
 
     collides('mage', 'ghost', (k, s) => {
@@ -226,7 +222,7 @@ export default function level () {
 
 	player.action(() => {
 		if (player.pos.y >= 320) {
-			respawn()
+			go('die')
 		}
 	});
 }
