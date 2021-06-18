@@ -111,7 +111,7 @@ scene('game', () => {
     })
 
     player.collides('danger', () => {
-        go('lose')
+        respawn()
     })
 
     collides('mage', 'ghost', (k, s) => {
@@ -164,17 +164,13 @@ scene('game', () => {
 
 	player.action(() => {
 		if (player.pos.y >= 320) {
-			go('lose')
+			respawn()
 		}
 	});
 })
 
 scene('win', () => {
     add([text('win'), origin('center'), pos(width()/2, height()/2)])
-})
-
-scene('lose', () => {
-    add([text('lose'), origin('center'), pos(width()/2, height()/2)])
 })
 
 start('game') 
