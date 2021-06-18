@@ -11,6 +11,8 @@ loadSprite('mage', 'mage.png')
 loadSprite('brick', 'brick.png')
 loadSprite('block', 'block.png')
 loadSprite('dark', 'dark.png')
+loadSprite('dark-attack', 'dark-attack.png')
+loadSprite('dark-attack-reverse', 'dark-attack-reverse.png')
 loadSprite('dark-reverse', 'dark-reverse.png')
 loadSprite('ghost', 'ghost.png')
 loadSprite('gem', 'key.png')
@@ -88,21 +90,27 @@ scene('game', () => {
         camPos(player.pos)
     })
 
-    const MOVE_SPEED = 90
-    const JUMP_FORCE = 220
+    let MOVE_SPEED = 90
+    let JUMP_FORCE = 220
+    let DIR = 'right'
 
     function attack(p) {
         const obj = add([sprite('mage'), pos(p), 'mage'])
-        player.changeSprite('attack')
-        wait(0.4, () => {
+        wait(0.2, () => {
             destroy(obj)
-            player.changeSprite('dark')
+            if (DIR === 'right') {
+                player.changeSprite('dark')
+            }
+
+            if (DIR === 'left') {
+                player.changeSprite('dark-reverse')
+            }
         })
     }
     
     player.overlaps('gem', (gem) => {
         destroy(gem)
-        JUMP_FORCE = 1220
+        JUMP_FORCE = 420
         hasGem = true
     })
 
@@ -141,12 +149,14 @@ scene('game', () => {
     })
 
     keyDown('left', () => {
+        DIR = 'left'
         player.changeSprite('dark-reverse')
         player.move(-MOVE_SPEED, 0)
         player.dir = vec2(-1,0)
     })
 
     keyDown('right', () => {
+        DIR = 'right'
         player.changeSprite('dark')
         player.move(MOVE_SPEED, 0)
         player.dir = vec2(1,0)
@@ -164,6 +174,14 @@ scene('game', () => {
 
     keyPress('down', () => {
         attack(player.pos.add(player.dir.scale(15)))
+        if (DIR === 'right') {
+            player.changeSprite('dark-attack')
+        }
+
+        if (DIR === 'left') {
+            player.changeSprite('dark-attack-reverse')
+        }
+        
     })
 
 	player.action(() => {
@@ -171,7 +189,7 @@ scene('game', () => {
 			respawn()
 		}
 	});
-})
+} )
 
 scene('win', () => {
     add([text('win'), origin('center'), pos(width()/2, height()/2)])
