@@ -14,6 +14,6 @@ export default function ui () {
         })
     ])
     keyPress('space', () => {
-        go('final')
+        go('game')
     })
 }
