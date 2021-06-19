@@ -48,7 +48,7 @@ export default function final () {
     })
 
     let MOVE_SPEED = 90
-    let JUMP_FORCE = 220
+    let JUMP_FORCE = 420
     let DIR = 'right'
     let SHIELD = 5
 
@@ -101,6 +101,8 @@ export default function final () {
                 SHIELD = SHIELD - 1
             })
         }
+
+        console.log('SHIELD', SHIELD)
 
         if (SHIELD === 1) {
             destroy(s)

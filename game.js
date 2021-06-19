@@ -8,6 +8,7 @@ import FINAL from './final.js'
 
 loadRoot('./imgs/')
 loadSprite('mage', 'mage.png')
+loadSprite('castle', 'castle.png')
 loadSprite('boss1', 'boss1.png')
 loadSprite('boss2', 'boss2.png')
 loadSprite('boss3', 'boss3.png')
@@ -25,7 +26,6 @@ loadSprite('ghost', 'ghost.png')
 loadSprite('gem', 'key.png')
 loadSprite('portal', 'portal.png')
 loadSprite('bg', 'bg.png')
-loadSprite('attack', 'attack.png')
 
 scene('start', UI)
 scene('game', LEVEL)
