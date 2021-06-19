@@ -74,10 +74,11 @@ export default function level () {
     let DIR = 'right'
     let SHIELD = true
     let SHIELDB = true
+    let MAGE = 1
 
     function attack(p) {
-        const obj = add([sprite('mage'), pos(p), 'mage'])
-        wait(0.3, () => {
+        const obj = add([sprite('mage'), scale(MAGE), pos(p), 'mage'])
+        wait(0.1, () => {
             destroy(obj)
             if (DIR === 'right') {
                 player.changeSprite('dark')
@@ -91,7 +92,7 @@ export default function level () {
     
     player.overlaps('gem', (gem) => {
         destroy(gem)
-        JUMP_FORCE = 420
+        MAGE = 1.2
         hasGem = true
     })
 

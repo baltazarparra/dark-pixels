@@ -48,12 +48,12 @@ export default function final () {
     })
 
     let MOVE_SPEED = 90
-    let JUMP_FORCE = 420
+    let JUMP_FORCE = 220
     let DIR = 'right'
     let SHIELD = 5
 
     function attack(p) {
-        const obj = add([sprite('mage'), pos(p), 'mage'])
+        const obj = add([sprite('mage'), scale(1.2), pos(p), 'mage'])
         wait(0.1, () => {
             destroy(obj)
             if (DIR === 'right') {
@@ -73,6 +73,7 @@ export default function final () {
     collides('mage', 'ghost', (k, s) => {
         camShake(10)
         s.move(2000, 0)
+        console.log('SHIELD', SHIELD)
 
         if (SHIELD === 5) {
             s.changeSprite('boss2')
