@@ -5,7 +5,7 @@ export default function final () {
     const player = add([
         sprite('dark'),
         solid(),
-        pos(0,240),
+        pos(20,240),
         body(),
         {
             dir: vec2(1,0)
@@ -15,20 +15,20 @@ export default function final () {
     layers(['bg', 'obj'], 'obj')
 
     const map = [
-        '                                                                                =',
-        '                                                                                =',
-        '                                                                                =',
-        '                                                                                =',
-        '                                                                                =',
-        '                                                                                =',
-        '                                                                                =',
-        '                                                                                =',
-        '                                                                                =',
-        '                                                                                =',
-        '                          >>                                                    =',
-        '             >>>  >>   >                                                        =',
-        '         >>                                   #                                 =',
-        '=================================================================================',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                                                                             =',
+        '=                       >>                                                    =',
+        '=          >>>  >>   >                                                        =',
+        '=      >>                                   #                                 =',
+        '===============================================================================',
     ]
 
     const levelConfig = {
@@ -114,7 +114,7 @@ export default function final () {
             s.timer -= dt()
             if (s.timer <= 0) {
                 s.dir = - s.dir
-                s.timer = rand(8)
+                s.timer = rand(3)
                 s.jump(400, 0)
             }
         } else if (SHIELD === 1) {
@@ -122,7 +122,7 @@ export default function final () {
             s.timer -= dt()
             if (s.timer <= 0) {
                 s.dir = - s.dir
-                s.timer = rand(12)
+                s.timer = rand(2)
                 s.jump(450, 0)
             }
         } else {
