@@ -15,19 +15,19 @@ export default function final () {
     layers(['bg', 'obj'], 'obj')
 
     const map = [
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                          >>                                                     ',
-        '             >>>  >>   >                                                         ',
-        '         >>                                   #                                  ',
+        '                                                                                =',
+        '                                                                                =',
+        '                                                                                =',
+        '                                                                                =',
+        '                                                                                =',
+        '                                                                                =',
+        '                                                                                =',
+        '                                                                                =',
+        '                                                                                =',
+        '                                                                                =',
+        '                          >>                                                    =',
+        '             >>>  >>   >                                                        =',
+        '         >>                                   #                                 =',
         '=================================================================================',
     ]
 
@@ -50,11 +50,11 @@ export default function final () {
     let MOVE_SPEED = 90
     let JUMP_FORCE = 220
     let DIR = 'right'
-    let SHIELD = 3
+    let SHIELD = 5
 
     function attack(p) {
         const obj = add([sprite('mage'), pos(p), 'mage'])
-        wait(0.3, () => {
+        wait(0.1, () => {
             destroy(obj)
             if (DIR === 'right') {
                 player.changeSprite('dark')
@@ -74,15 +74,29 @@ export default function final () {
         camShake(10)
         s.move(2000, 0)
 
-        if (SHIELD === 3) {
+        if (SHIELD === 5) {
             s.changeSprite('boss2')
             wait(1, () => {
                 SHIELD = SHIELD - 1
             })
         }
 
-        if (SHIELD === 2) {
+        if (SHIELD === 4) {
             s.changeSprite('boss3')
+            wait(1, () => {
+                SHIELD = SHIELD - 1
+            })
+        }
+
+        if (SHIELD === 3) {
+            s.changeSprite('boss4')
+            wait(1, () => {
+                SHIELD = SHIELD - 1
+            })
+        }
+
+        if (SHIELD === 2) {
+            s.changeSprite('boss5')
             wait(1, () => {
                 SHIELD = SHIELD - 1
             })
@@ -95,12 +109,30 @@ export default function final () {
     })
 
     action('ghost', (s) => {
-        s.move(s.dir * 100, 0)
-        s.timer -= dt()
-        if (s.timer <= 0) {
-            s.dir = - s.dir
-            s.timer = rand(4)
-            s.jump(350, 0)
+        if (SHIELD === 2) {
+            s.move(s.dir * 300, 0)
+            s.timer -= dt()
+            if (s.timer <= 0) {
+                s.dir = - s.dir
+                s.timer = rand(8)
+                s.jump(400, 0)
+            }
+        } else if (SHIELD === 1) {
+            s.move(s.dir * 400, 0)
+            s.timer -= dt()
+            if (s.timer <= 0) {
+                s.dir = - s.dir
+                s.timer = rand(12)
+                s.jump(450, 0)
+            }
+        } else {
+            s.move(s.dir * 100, 0)
+            s.timer -= dt()
+            if (s.timer <= 0) {
+                s.dir = - s.dir
+                s.timer = rand(4)
+                s.jump(350, 0)
+            }
         }
     })
 
@@ -141,7 +173,6 @@ export default function final () {
         if (DIR === 'left') {
             player.changeSprite('dark-attack-reverse')
         }
-        
     })
 
 	player.action(() => {

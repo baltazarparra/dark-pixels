@@ -9,7 +9,7 @@ export default function ui () {
     ])
     add([
         pos(10,100),
-        text('press spacebar to enter in darkness', 8, {
+        text('press space', 8, {
             width: 1000
         })
     ])
