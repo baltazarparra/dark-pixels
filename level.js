@@ -117,7 +117,7 @@ export default function level () {
     })
 
     collides('mage', 'bad', (k, s) => {
-        s.move(1000, 0)
+        s.move(2000, 0)
         camShake(6)
 
         if (SHIELD) {
@@ -136,7 +136,7 @@ export default function level () {
     })
 
     collides('mage', 'badb', (k, s) => {
-        s.move(1000, 0)
+        s.move(2000, 0)
         camShake(6)
 
         if (SHIELDB) {
@@ -171,16 +171,18 @@ export default function level () {
             s.dir = - s.dir
             s.timer = rand(4)
             s.jump(300, 0)
+            s.move(-500, 0)
         }
     })
 
     action('badb', (s) => {
-        s.move(s.dir * 20, 0)
+        s.move(s.dir * 60, 0)
         s.timer -= dt()
         if (s.timer <= 0) {
             s.dir = - s.dir
             s.timer = rand(6)
             s.jump(350, 0)
+            s.move(500, 0)
         }
     })
 

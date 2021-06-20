@@ -72,7 +72,7 @@ export default function final () {
 
     collides('mage', 'ghost', (k, s) => {
         camShake(10)
-        s.move(2000, 0)
+        s.move(6000, 0)
         console.log('SHIELD', SHIELD)
 
         if (SHIELD === 5) {
@@ -165,6 +165,18 @@ export default function final () {
 
     keyPress('s', () => {
         player.move(-3500, 0)
+    })
+
+    keyPress('space', () => {
+        attack(player.pos.add(player.dir.scale(20)))
+        if (DIR === 'right') {
+            player.changeSprite('dark-attack')
+        }
+
+        if (DIR === 'left') {
+            player.changeSprite('dark-attack-reverse')
+        }
+        
     })
 
     mouseClick(() => {
