@@ -60,7 +60,7 @@ export default function level () {
 
     add([
         pos(10,100),
-        text('Walk - A, D | Jump - W | Attack - Click | Dash - S', 8, {
+        text('Walk - A, D | Jump - W | Attack - Click or Space | Dash - S', 8, {
             width: 1000
         })
     ])
@@ -210,6 +210,18 @@ export default function level () {
 
     keyPress('s', () => {
         player.move(-3500, 0)
+    })
+
+    keyPress('space', () => {
+        attack(player.pos.add(player.dir.scale(20)))
+        if (DIR === 'right') {
+            player.changeSprite('dark-attack')
+        }
+
+        if (DIR === 'left') {
+            player.changeSprite('dark-attack-reverse')
+        }
+        
     })
 
     mouseClick(() => {

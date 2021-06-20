@@ -9,11 +9,14 @@ export default function ui () {
     ])
     add([
         pos(10,100),
-        text('Click to start', 8, {
+        text('Click or press space', 8, {
             width: 1000
         })
     ])
     mouseClick(() => {
+        go('game')
+    })
+    keyDown('space', () => {
         go('game')
     })
 }
