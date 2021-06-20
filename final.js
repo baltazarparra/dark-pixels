@@ -143,31 +143,31 @@ export default function final () {
         s.dir = -s.dir
     })
 
-    keyDown('left', () => {
+    keyDown('a', () => {
         DIR = 'left'
         player.changeSprite('dark-reverse')
         player.move(-MOVE_SPEED, 0)
         player.dir = vec2(-1,0)
     })
 
-    keyDown('right', () => {
+    keyDown('d', () => {
         DIR = 'right'
         player.changeSprite('dark')
         player.move(MOVE_SPEED, 0)
         player.dir = vec2(1,0)
     })
 
-    keyPress('space', () => {
+    keyPress('w', () => {
         if (player.grounded()) {
             player.jump(JUMP_FORCE, 0)
         }
     })
 
-    keyPress('up', () => {
+    keyPress('s', () => {
         player.move(-3500, 0)
     })
 
-    keyPress('down', () => {
+    mouseClick(() => {
         attack(player.pos.add(player.dir.scale(20)))
         if (DIR === 'right') {
             player.changeSprite('dark-attack')

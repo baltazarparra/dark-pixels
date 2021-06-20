@@ -60,7 +60,7 @@ export default function level () {
 
     add([
         pos(10,100),
-        text('right and left = walk | space = jump | down = dark mage | up = backdash', 8, {
+        text('Walk - A, D | Jump - W | Attack - Click | Dash - S', 8, {
             width: 1000
         })
     ])
@@ -188,31 +188,31 @@ export default function level () {
         s.dir = -s.dir
     })
 
-    keyDown('left', () => {
+    keyDown('a', () => {
         DIR = 'left'
         player.changeSprite('dark-reverse')
         player.move(-MOVE_SPEED, 0)
         player.dir = vec2(-1,0)
     })
 
-    keyDown('right', () => {
+    keyDown('d', () => {
         DIR = 'right'
         player.changeSprite('dark')
         player.move(MOVE_SPEED, 0)
         player.dir = vec2(1,0)
     })
 
-    keyPress('space', () => {
+    keyPress('w', () => {
         if (player.grounded()) {
             player.jump(JUMP_FORCE, 0)
         }
     })
 
-    keyPress('up', () => {
+    keyPress('s', () => {
         player.move(-3500, 0)
     })
 
-    keyPress('down', () => {
+    mouseClick(() => {
         attack(player.pos.add(player.dir.scale(20)))
         if (DIR === 'right') {
             player.changeSprite('dark-attack')
