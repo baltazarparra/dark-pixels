@@ -1,7 +1,8 @@
 import k from './kaboom.js'
 
 export default function level () {
-
+    layers(['bg', 'obj'], 'obj')
+    
     const player = add([
         sprite('dark'),
         solid(),
@@ -11,8 +12,6 @@ export default function level () {
             dir: vec2(1,0)
         }
     ]) 
-
-    layers(['bg', 'obj'], 'obj')
 
     const map = [
         '                                                                                 ',
@@ -30,8 +29,6 @@ export default function level () {
         '  ==~       =        #   =     #     +=    #   =        #          ==            ',
         '=============   ==========   =======>>=    ======================================',
     ]
-
-    let hasGem = false
 
     const levelConfig = {
         width: 20,
@@ -74,6 +71,7 @@ export default function level () {
     let SHIELD = true
     let SHIELDB = true
     let MAGE = 1
+    let hasGem = false
 
     function attack(p) {
         const obj = add([sprite('mage'), scale(MAGE), pos(p), 'mage'])
@@ -105,6 +103,12 @@ export default function level () {
     player.collides('danger', () => {
         go('die')
     })
+
+	player.action(() => {
+		if (player.pos.y >= 320) {
+			go('die')
+		}
+	});
 
     collides('mage', 'ghost', (k, s) => {
         camShake(4)
@@ -152,6 +156,10 @@ export default function level () {
         }
     })
 
+    collides('danger', 'wall', (s) => {
+        s.dir = -s.dir
+    })
+
     action('ghost', (s) => {
         s.move(s.dir * 80, 0)
         s.timer -= dt()
@@ -182,10 +190,6 @@ export default function level () {
             s.jump(350, 0)
             s.move(500, 0)
         }
-    })
-
-    collides('danger', 'wall', (s) => {
-        s.dir = -s.dir
     })
 
     keyDown('a', () => {
@@ -235,10 +239,4 @@ export default function level () {
         }
         
     })
-
-	player.action(() => {
-		if (player.pos.y >= 320) {
-			go('die')
-		}
-	});
 }
