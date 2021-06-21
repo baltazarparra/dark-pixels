@@ -1,6 +1,6 @@
 import k from './kaboom.js'
 
-export default function ui () {
+export default function start () {
     add([
         pos(10,20),
         text('DARK PIXELS', 40, {

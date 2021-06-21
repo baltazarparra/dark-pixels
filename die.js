@@ -5,10 +5,10 @@ export default function die () {
     add([text('Click or press space'), origin('center'), pos(width()/2, height()/2)])
     
     mouseClick(() => {
-        go('game')
+        go('start')
     })
 
     keyDown('space', () => {
-        go('game')
+        go('start')
     })
 }

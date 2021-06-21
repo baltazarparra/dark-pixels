@@ -1,11 +1,11 @@
 import k from './kaboom.js'
 
-import UI from './ui.js'
-import LEVEL from './level.js'
+import START from './start.js'
+import LEVEL_ONE from './level-one.js'
 import WIN from './win.js'
 import DIE from './die.js'
 import FINAL from './final.js'
-import SECOND from './second.js'
+import LEVEL_TWO from './level-two.js'
 
 loadRoot('./imgs/')
 loadSprite('mage', 'mage.png')
@@ -30,11 +30,11 @@ loadSprite('bg', 'bg.png')
 loadSprite('power', 'power.png')
 loadSprite('mageup', 'mageup.png')
 
-scene('start', UI)
-scene('game', LEVEL)
+scene('start', START)
+scene('game', LEVEL_ONE)
 scene('win', WIN)
 scene('die', DIE)
 scene('final', FINAL)
-scene('second', SECOND)
+scene('second', LEVEL_TWO)
 
 start('start') 
