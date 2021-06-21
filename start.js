@@ -14,9 +14,9 @@ export default function start () {
         })
     ])
     mouseClick(() => {
-        go('game')
+        go('one')
     })
     keyDown('space', () => {
-        go('game')
+        go('one')
     })
 }

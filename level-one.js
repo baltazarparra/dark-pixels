@@ -94,9 +94,9 @@ export default function level () {
 
     player.overlaps('portal', () => {
         if (hasGem) {
-            go('second')
+            go('two')
         } else {
-            go('die')
+            go('one')
         }
     })
 

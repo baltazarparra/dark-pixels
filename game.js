@@ -31,10 +31,10 @@ loadSprite('power', 'power.png')
 loadSprite('mageup', 'mageup.png')
 
 scene('start', START)
-scene('game', LEVEL_ONE)
+scene('one', LEVEL_ONE)
+scene('two', LEVEL_TWO)
+scene('final', FINAL)
 scene('win', WIN)
 scene('die', DIE)
-scene('final', FINAL)
-scene('second', LEVEL_TWO)
 
 start('start') 
