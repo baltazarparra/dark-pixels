@@ -1,6 +1,6 @@
 import k from './kaboom.js'
 
-export default function level () {
+export default function second () {
 
     const player = add([
         sprite('dark'),
@@ -24,7 +24,7 @@ export default function level () {
         '     >>    >                                                                     ',
         '  =     =                                     #  =#%                             ',
         '   =        #                                 =   ==>                            ',
-        '     >  #    >>                                        >                 =>      ',
+        '     >  #    >>                            *           >                 =>      ',
         '        =        >                       ===>         =              #           ',
         '   =  ===>         >              =#   >         >  =       &       #>>          ',
         '  ==~       =        #   =     #     +=    #   =        #          ==            ',
@@ -43,7 +43,8 @@ export default function level () {
         '~': [sprite('bad'), solid(), 'bad', body(), 'danger', { dir: 1, timer: 1 }],
         '+': [sprite('bad'), solid(), 'badb', body(), 'danger', { dir: -1, timer: 3 }],
         '%': [sprite('gem'), 'gem'],
-        '&': [sprite('portal'), 'portal', scale(2)]
+        '&': [sprite('portal'), 'portal', scale(2)],
+        '*': [sprite('power'), 'power']
     }
 
     addLevel(map, levelConfig)
@@ -94,9 +95,14 @@ export default function level () {
         hasGem = true
     })
 
+    player.overlaps('power', (power) => {
+        destroy(power)
+        MAGE = 2
+    })
+
     player.overlaps('portal', () => {
         if (hasGem) {
-            go('second')
+            go('final')
         } else {
             go('die')
         }

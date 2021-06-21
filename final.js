@@ -53,7 +53,7 @@ export default function final () {
     let SHIELD = 5
 
     function attack(p) {
-        const obj = add([sprite('mage'), scale(1.2), pos(p), 'mage'])
+        const obj = add([sprite('mage'), scale(2), pos(p), 'mage'])
         wait(0.1, () => {
             destroy(obj)
             if (DIR === 'right') {
