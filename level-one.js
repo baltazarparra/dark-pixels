@@ -1,17 +1,23 @@
 import k from './kaboom.js'
 
+const DASH_LEGHT = 32
+const DASH_SPEED = 4
+
 export default function level () {
     layers(['bg', 'obj'], 'obj')
-    
+
     const player = add([
         sprite('dark'),
         solid(),
         pos(0,240),
         body(),
         {
-            dir: vec2(1,0)
-        }
-    ]) 
+            dir: vec2(1,0),
+            slideTo: vec2(0, 0),
+            sliding: false
+        },
+        'player'
+    ])
 
     const map = [
         '                                                                                 ',
@@ -44,7 +50,7 @@ export default function level () {
     }
 
     addLevel(map, levelConfig)
-    
+
     add([sprite('bg'), layer('bg')])
 
     add([
@@ -86,7 +92,7 @@ export default function level () {
             }
         })
     }
-    
+
     player.overlaps('gem', (gem) => {
         destroy(gem)
         hasGem = true
@@ -109,6 +115,27 @@ export default function level () {
 			go('die')
 		}
 	});
+
+    player.on('update', () => {
+        if (player.sliding && parseInt(player.pos.dist(player.slideTo), 10) > 0) {
+            if (DIR === 'right') {
+                player.pos.x = player.pos.x - DASH_SPEED
+            }
+            if (DIR === 'left') {
+                player.pos.x = player.pos.x + DASH_SPEED
+            }
+        } else {
+            player.sliding = false
+            player.slideTo = vec2(0, 0)
+        }
+	});
+
+    overlaps('player', 'wall', (player, wall) => {
+        if (player.sliding) {
+            player.sliding = false
+            player.slideTo = vec2(0, 0)
+        }
+    })
 
     collides('mage', 'ghost', (k, s) => {
         camShake(4)
@@ -194,6 +221,11 @@ export default function level () {
 
     keyDown('a', () => {
         DIR = 'left'
+
+        if (player.sliding) {
+            return
+        }
+
         player.changeSprite('dark-reverse')
         player.move(-MOVE_SPEED, 0)
         player.dir = vec2(-1,0)
@@ -201,19 +233,37 @@ export default function level () {
 
     keyDown('d', () => {
         DIR = 'right'
+
+        if (player.sliding) {
+            return
+        }
+
         player.changeSprite('dark')
         player.move(MOVE_SPEED, 0)
         player.dir = vec2(1,0)
     })
 
     keyPress('w', () => {
+
+        if (player.sliding) {
+            return
+        }
+
         if (player.grounded()) {
             player.jump(JUMP_FORCE, 0)
         }
     })
 
     keyPress('s', () => {
-        player.move(-3500, 0)
+        if (!player.sliding && player.grounded()) {
+            player.sliding = true
+            if (DIR === 'right') {
+                player.slideTo = vec2(player.pos.x - DASH_LEGHT, player.pos.y)
+            }
+            if (DIR === 'left') {
+                player.slideTo = vec2(player.pos.x + DASH_LEGHT, player.pos.y)
+            }
+        }
     })
 
     keyPress('space', () => {
@@ -225,7 +275,7 @@ export default function level () {
         if (DIR === 'left') {
             player.changeSprite('dark-attack-reverse')
         }
-        
+
     })
 
     mouseClick(() => {
@@ -237,6 +287,6 @@ export default function level () {
         if (DIR === 'left') {
             player.changeSprite('dark-attack-reverse')
         }
-        
+
     })
 }
