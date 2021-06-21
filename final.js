@@ -72,7 +72,14 @@ export default function final () {
 
     collides('mage', 'ghost', (k, s) => {
         camShake(10)
-        s.move(6000, 0)
+
+        if (DIR === 'right') {
+            s.move(5000, 0)
+        }
+
+        if (DIR === 'left') {
+            s.move(-5000, 0)
+        }
 
         if (SHIELD === 5) {
             s.changeSprite('boss2')
@@ -163,7 +170,13 @@ export default function final () {
     })
 
     keyPress('s', () => {
-        player.move(-3500, 0)
+        if (DIR === 'right') {
+            player.move(-3500, 0)
+        }
+
+        if (DIR === 'left') {
+            player.move(3500, 0)
+        }
     })
 
     keyPress('space', () => {

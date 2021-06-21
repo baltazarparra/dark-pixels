@@ -15,20 +15,20 @@ export default function second () {
     layers(['bg', 'obj'], 'obj')
 
     const map = [
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '                                                                                 ',
-        '     >>    >                                                                     ',
-        '  =     =                                     #  =#%                             ',
-        '   =        #                                 =   ==>                            ',
-        '     >  #    >>                            *           >                 =>      ',
-        '        =        >                       ===>         =              #           ',
-        '   =  ===>         >              =#   >         >  =       &       #>>          ',
-        '  ==~       =        #   =     #     +=    #   =        #          ==            ',
-        '=============   ==========   =======>>=    ======================================',
+        '             %                                                                   ',
+        '             >>                                                                  ',
+        '                 >>                #                #    *                       ',
+        '                     ==  =+    ==/ _               /======                       ',
+        '                 ======   >>>>=                                                  ',
+        '        ===  >>                                                                  ',
+        '      =                                                                          ',
+        '       > #                                                                       ',
+        '         ====                                                                    ',
+        '               =                                                                 ',
+        '             ==                                                          &       ',
+        '       >   >>                                            >    #                  ',
+        '     #=  =                                              =    #                ~  ',
+        '==============                                           ========================',
     ]
 
     let hasGem = false
@@ -37,6 +37,8 @@ export default function second () {
         width: 20,
         height: 20,
         '=': [sprite('brick'), solid(), 'wall'],
+        '_': [sprite('brick'), solid(), 'move', { dir: -1 }],
+        '/': [sprite('block'), solid(), 'turn'],
         '>': [sprite('block'), solid(), 'wall'],
         '$': [sprite('gem'), solid()],
         '#': [sprite('ghost'), solid(), 'ghost', body(), 'danger', { dir: -1, timer: 0 }],
@@ -50,20 +52,6 @@ export default function second () {
     addLevel(map, levelConfig)
     
     add([sprite('bg'), layer('bg')])
-
-    add([
-        pos(10,310),
-        text('DARK PIXELS', 20, {
-            width: 1000
-        })
-    ])
-
-    add([
-        pos(10,100),
-        text('Walk - A, D | Jump - W | Attack - Click or Space | Dash - S', 8, {
-            width: 1000
-        })
-    ])
 
     player.action(() => {
         camPos(player.pos)
@@ -156,6 +144,15 @@ export default function second () {
             })
             destroy(s)
         }
+    })
+
+    const TURN = 140
+    action('move', (m) => {
+        m.move(m.dir * TURN, 0)
+    })
+
+    collides('move', 'turn', (m) => {
+        m.dir = -m.dir
     })
 
     action('ghost', (s) => {
