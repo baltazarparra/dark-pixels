@@ -1,8 +1,9 @@
 export const k = kaboom({
     global: true,
     fullscreen: true,
-    scale: 1.5,
+    scale: 2,
     debug: true,
+    canvas: document.getElementById("game"),
     clearColor: [0,0,0,1]
 })
 

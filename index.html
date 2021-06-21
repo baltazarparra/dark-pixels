@@ -7,21 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="./favicon.ico">
     <title>Dark Pixels</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3KCTFLSHYB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3KCTFLSHYB');
+    </script>
 </head>
 
 <body>
+    <img src="./imgs/dark.png">
+    <canvas id="game"></canvas>
+    <div class="only">Only desktop</div>
+    <footer>
+        2021 | Developed by <a href="https://baltazarparra.github.io" target="_blank">baltz</a>
+    </footer>
     <script src="https://kaboomjs.com/lib/0.5.0/kaboom.js"></script>
     <script type="module" src="game.js"></script>
-    <script type="text/javascript">
-        document.body.requestPointerLock();
-    </script>
 </body>
 
 </html>

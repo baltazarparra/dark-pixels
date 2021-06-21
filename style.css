@@ -1,0 +1,42 @@
+@font-face {
+    font-family: "CustomFont";
+    src: url('./Proggy.ttf');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+    display: flex;
+    color: white;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-around;
+    font-family: 'CustomFont', monospace;
+    text-align: center;
+}
+
+img {
+    width: 30px;
+    display: block;
+    margin: 0 auto;
+}
+
+canvas {
+    display: none;
+}
+
+@media (pointer: fine) {
+    canvas {
+        margin: 0 auto;
+        width: 1024px;
+        display: block;
+    }
+    footer, img {
+        user-select: none;
+    }
+    .only {
+        display: none;
+    }
+}
