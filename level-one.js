@@ -15,6 +15,7 @@ export default function level () {
             slideTo: vec2(0, 0),
             sliding: false,
             canSlide: true,
+            canAttack: true
         },
         'player'
     ])
@@ -151,15 +152,10 @@ export default function level () {
     function attack(p) {
         const obj = add([sprite('mage'), scale(MAGE), pos(p.x, p.y - 10), 'mage'])
 
-        wait(0.2, () => {
+        wait(0.3, () => {
             destroy(obj)
-            if (DIR === 'right') {
-                player.changeSprite('dark')
-            }
-
-            if (DIR === 'left') {
-                player.changeSprite('dark-reverse')
-            }
+            if (DIR === 'right') player.changeSprite('dark')
+            if (DIR === 'left') player.changeSprite('dark-reverse')
         })
     }
 
@@ -351,14 +347,14 @@ export default function level () {
     })
 
     mouseClick(() => {
-        attack(player.pos.add(player.dir.scale(20)))
-        if (DIR === 'right') {
-            player.changeSprite('dark-attack')
+        if(player.canAttack) {
+            player.canAttack = false
+            attack(player.pos.add(player.dir.scale(20)))
+            if (DIR === 'right') player.changeSprite('dark-attack')
+            if (DIR === 'left') player.changeSprite('dark-attack-reverse')
+            wait(0.6, () => {
+                player.canAttack = true
+            })
         }
-
-        if (DIR === 'left') {
-            player.changeSprite('dark-attack-reverse')
-        }
-
     })
 }
