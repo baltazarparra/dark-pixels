@@ -1,8 +1,16 @@
 import k from './kaboom.js'
 
-const DASH_SPEED = 180
-
 export default function level () {
+    let MOVE_SPEED = 90
+    let JUMP_FORCE = 220
+    let DIR = 'right'
+    let SHIELD = true
+    let SHIELDB = true
+    let MAGE = 1.5
+    let hasGem = false
+    let addMsg = true
+    let DASH_SPEED = 180
+
     layers(['bg', 'obj'], 'obj')
 
     const player = add([
@@ -98,7 +106,7 @@ export default function level () {
         '     >       >>  #                           ##                                  ',
         '      ~           >                       =  ==     # >=              +          ',
         '      ===>         >              =    >         >  =     >         #>>      &  >',
-        '       #             #   =    =#     +=        =        #   >  #          #     >',
+        '       #             #   =    =#      =        =        #   >  #          #     >',
         '=============  >======  ==  =    ===>>=                       ===================',
         ]
     ]
@@ -111,7 +119,7 @@ export default function level () {
         '$': [sprite('gem'), solid()],
         '#': [sprite('ghost'), solid(), 'ghost', body(), 'danger', { dir: -1, timer: 0 }],
         '~': [sprite('bad'), solid(), 'bad', body(), 'danger', { dir: 1, timer: 1 }],
-        '+': [sprite('bad'), solid(), 'badb', body(), 'danger', { dir: -1, timer: 3 }],
+        '+': [sprite('bad'), solid(), 'badb', body(), 'danger', { dir: -1, timer: 0 }],
         '%': [sprite('gem'), 'gem'],
         '&': [sprite('portal'), 'portal', scale(2)]
     }
@@ -136,19 +144,6 @@ export default function level () {
         })
     ])
 
-    player.action(() => {
-        camPos(player.pos)
-    })
-
-    let MOVE_SPEED = 90
-    let JUMP_FORCE = 220
-    let DIR = 'right'
-    let SHIELD = true
-    let SHIELDB = true
-    let MAGE = 1.5
-    let hasGem = false
-    let addMsg = true
-
     function attack(p) {
         const obj = add([sprite('mage'), scale(MAGE), pos(p.x, p.y - 10), 'mage'])
 
@@ -158,6 +153,16 @@ export default function level () {
             if (DIR === 'left') player.changeSprite('dark-reverse')
         })
     }
+
+    player.action(() => {
+        camPos(player.pos)
+    })
+
+    player.action(() => {
+		if (player.pos.y >= 320) {
+			go('die')
+		}
+	})
 
     player.overlaps('gem', (gem) => {
         destroy(gem)
@@ -177,12 +182,6 @@ export default function level () {
         go('die')
     })
 
-	player.action(() => {
-		if (player.pos.y >= 320) {
-			go('die')
-		}
-	});
-
     player.on('update', () => {
         if (player.sliding) {
             player.pos.x += player.slideTo.x * DASH_SPEED * dt()
@@ -190,7 +189,7 @@ export default function level () {
             player.sliding = false
             player.slideTo = vec2(0, 0)
         }
-	});
+	})
 
     overlaps('player', 'wall', (player) => {
         if (player.sliding) {
@@ -335,15 +334,15 @@ export default function level () {
     })
 
     keyPress('space', () => {
-        attack(player.pos.add(player.dir.scale(20)))
-        if (DIR === 'right') {
-            player.changeSprite('dark-attack')
+        if(player.canAttack) {
+            player.canAttack = false
+            attack(player.pos.add(player.dir.scale(20)))
+            if (DIR === 'right') player.changeSprite('dark-attack')
+            if (DIR === 'left') player.changeSprite('dark-attack-reverse')
+            wait(0.6, () => {
+                player.canAttack = true
+            })
         }
-
-        if (DIR === 'left') {
-            player.changeSprite('dark-attack-reverse')
-        }
-
     })
 
     mouseClick(() => {

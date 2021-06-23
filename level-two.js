@@ -1,6 +1,18 @@
 import k from './kaboom.js'
 
 export default function second () {
+    let MOVE_SPEED = 90
+    let JUMP_FORCE = 220
+    let DIR = 'right'
+    let SHIELD = true
+    let SHIELDB = true
+    let MAGE = 1.5
+    let hasGem = false
+    let addMsg = true
+    let DASH_SPEED = 180
+    let TURN = 140
+
+    layers(['bg', 'obj'], 'obj')
 
     const player = add([
         sprite('dark'),
@@ -8,11 +20,14 @@ export default function second () {
         pos(0,240),
         body(),
         {
-            dir: vec2(1,0)
-        }
-    ]) 
-
-    layers(['bg', 'obj'], 'obj')
+            dir: vec2(1,0),
+            slideTo: vec2(0, 0),
+            sliding: false,
+            canSlide: true,
+            canAttack: true
+        },
+        'player'
+    ])
 
     const map = [
         '             %                                                                   ',
@@ -30,8 +45,6 @@ export default function second () {
         '     #=  =                                              =    #                ~  ',
         '==============                                           ========================',
     ]
-
-    let hasGem = false
 
     const levelConfig = {
         width: 20,
@@ -53,31 +66,26 @@ export default function second () {
     
     add([sprite('bg'), layer('bg')])
 
+    function attack(p) {
+        const obj = add([sprite('mage'), scale(MAGE), pos(p.x, p.y - 10), 'mage'])
+
+        wait(0.3, () => {
+            destroy(obj)
+            if (DIR === 'right') player.changeSprite('dark')
+            if (DIR === 'left') player.changeSprite('dark-reverse')
+        })
+    }
+    
     player.action(() => {
         camPos(player.pos)
     })
 
-    let MOVE_SPEED = 90
-    let JUMP_FORCE = 220
-    let DIR = 'right'
-    let SHIELD = true
-    let SHIELDB = true
-    let MAGE = 1.5
+    player.action(() => {
+		if (player.pos.y >= 320) {
+			go('die')
+		}
+	})
 
-    function attack(p) {
-        const obj = add([sprite('mage'), scale(MAGE), pos(p.x, p.y - 10), 'mage'])
-        wait(0.1, () => {
-            destroy(obj)
-            if (DIR === 'right') {
-                player.changeSprite('dark')
-            }
-
-            if (DIR === 'left') {
-                player.changeSprite('dark-reverse')
-            }
-        })
-    }
-    
     player.overlaps('gem', (gem) => {
         destroy(gem)
         hasGem = true
@@ -91,13 +99,31 @@ export default function second () {
     player.overlaps('portal', () => {
         if (hasGem) {
             go('final')
-        } else {
-            go('die')
+        } else if (addMsg) {
+            addMsg = false
+            add([text('you need a key'), pos(player.pos.x, player.pos.y)])
         }
     })
 
     player.collides('danger', () => {
         go('die')
+    })
+
+    player.on('update', () => {
+        if (player.sliding) {
+            player.pos.x += player.slideTo.x * DASH_SPEED * dt()
+        } else {
+            player.sliding = false
+            player.slideTo = vec2(0, 0)
+        }
+	})
+
+    overlaps('player', 'wall', (player) => {
+        if (player.sliding) {
+            player.sliding = false
+            player.canSlide = true
+            player.slideTo = vec2(0, 0)
+        }
     })
 
     collides('mage', 'ghost', (k, s) => {
@@ -109,7 +135,7 @@ export default function second () {
     })
 
     collides('mage', 'bad', (k, s) => {
-        s.move(2000, 0)
+        s.move(1000, 0)
         camShake(6)
 
         if (SHIELD) {
@@ -128,7 +154,7 @@ export default function second () {
     })
 
     collides('mage', 'badb', (k, s) => {
-        s.move(2000, 0)
+        s.move(1000, 0)
         camShake(6)
 
         if (SHIELDB) {
@@ -146,13 +172,16 @@ export default function second () {
         }
     })
 
-    const TURN = 140
-    action('move', (m) => {
-        m.move(m.dir * TURN, 0)
-    })
-
     collides('move', 'turn', (m) => {
         m.dir = -m.dir
+    })
+    
+    collides('danger', 'wall', (s) => {
+        s.dir = -s.dir
+    })
+
+    action('move', (m) => {
+        m.move(m.dir * TURN, 0)
     })
 
     action('ghost', (s) => {
@@ -187,12 +216,13 @@ export default function second () {
         }
     })
 
-    collides('danger', 'wall', (s) => {
-        s.dir = -s.dir
-    })
-
     keyDown('a', () => {
         DIR = 'left'
+
+        if (player.sliding) {
+            return
+        }
+
         player.changeSprite('dark-reverse')
         player.move(-MOVE_SPEED, 0)
         player.dir = vec2(-1,0)
@@ -200,48 +230,65 @@ export default function second () {
 
     keyDown('d', () => {
         DIR = 'right'
+
+        if (player.sliding) {
+            return
+        }
+
         player.changeSprite('dark')
         player.move(MOVE_SPEED, 0)
         player.dir = vec2(1,0)
     })
 
     keyPress('w', () => {
+
+        if (player.sliding) {
+            return
+        }
+
         if (player.grounded()) {
             player.jump(JUMP_FORCE, 0)
         }
     })
 
     keyPress('s', () => {
-        player.move(-3500, 0)
+        if (player.canSlide && !player.sliding && player.grounded()) {
+            player.canSlide = false
+            player.sliding = true
+            if (DIR === 'right') player.slideTo = vec2(-1, 0)
+            if (DIR === 'left') player.slideTo = vec2(1, 0)
+            wait(0.25, () => {
+                if (player.sliding) {
+                    player.sliding = false
+                    wait(0.5, () => {
+                        player.canSlide = true
+                    })
+                }
+            })
+        }
     })
 
     keyPress('space', () => {
-        attack(player.pos.add(player.dir.scale(20)))
-        if (DIR === 'right') {
-            player.changeSprite('dark-attack')
+        if(player.canAttack) {
+            player.canAttack = false
+            attack(player.pos.add(player.dir.scale(20)))
+            if (DIR === 'right') player.changeSprite('dark-attack')
+            if (DIR === 'left') player.changeSprite('dark-attack-reverse')
+            wait(0.6, () => {
+                player.canAttack = true
+            })
         }
-
-        if (DIR === 'left') {
-            player.changeSprite('dark-attack-reverse')
-        }
-        
     })
 
     mouseClick(() => {
-        attack(player.pos.add(player.dir.scale(20)))
-        if (DIR === 'right') {
-            player.changeSprite('dark-attack')
+        if(player.canAttack) {
+            player.canAttack = false
+            attack(player.pos.add(player.dir.scale(20)))
+            if (DIR === 'right') player.changeSprite('dark-attack')
+            if (DIR === 'left') player.changeSprite('dark-attack-reverse')
+            wait(0.6, () => {
+                player.canAttack = true
+            })
         }
-
-        if (DIR === 'left') {
-            player.changeSprite('dark-attack-reverse')
-        }
-        
     })
-
-	player.action(() => {
-		if (player.pos.y >= 320) {
-			go('die')
-		}
-	});
 }
