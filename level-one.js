@@ -1,7 +1,6 @@
 import k from './kaboom.js'
 
-const DASH_LEGHT = 32
-const DASH_SPEED = 4
+const DASH_SPEED = 180
 
 export default function level () {
     layers(['bg', 'obj'], 'obj')
@@ -14,7 +13,8 @@ export default function level () {
         {
             dir: vec2(1,0),
             slideTo: vec2(0, 0),
-            sliding: false
+            sliding: false,
+            canSlide: true,
         },
         'player'
     ])
@@ -188,22 +188,18 @@ export default function level () {
 	});
 
     player.on('update', () => {
-        if (player.sliding && parseInt(player.pos.dist(player.slideTo), 10) > 0) {
-            if (DIR === 'right') {
-                player.pos.x = player.pos.x - DASH_SPEED
-            }
-            if (DIR === 'left') {
-                player.pos.x = player.pos.x + DASH_SPEED
-            }
+        if (player.sliding) {
+            player.pos.x += player.slideTo.x * DASH_SPEED * dt()
         } else {
             player.sliding = false
             player.slideTo = vec2(0, 0)
         }
 	});
 
-    overlaps('player', 'wall', (player, wall) => {
+    overlaps('player', 'wall', (player) => {
         if (player.sliding) {
             player.sliding = false
+            player.canSlide = true
             player.slideTo = vec2(0, 0)
         }
     })
@@ -326,14 +322,19 @@ export default function level () {
     })
 
     keyPress('s', () => {
-        if (!player.sliding && player.grounded()) {
+        if (player.canSlide && !player.sliding && player.grounded()) {
+            player.canSlide = false
             player.sliding = true
-            if (DIR === 'right') {
-                player.slideTo = vec2(player.pos.x - DASH_LEGHT, player.pos.y)
-            }
-            if (DIR === 'left') {
-                player.slideTo = vec2(player.pos.x + DASH_LEGHT, player.pos.y)
-            }
+            if (DIR === 'right') player.slideTo = vec2(-1, 0)
+            if (DIR === 'left') player.slideTo = vec2(1, 0)
+            wait(0.25, () => {
+                if (player.sliding) {
+                    player.sliding = false
+                    wait(0.5, () => {
+                        player.canSlide = true
+                    })
+                }
+            })
         }
     })
 
