@@ -20,6 +20,7 @@ export default function level () {
     ])
 
     const map = [
+        [
         '                                                                                 ',
         '                                                                                 ',
         '                                                                                 ',
@@ -34,6 +35,71 @@ export default function level () {
         '   =  ===>         >              =#   >         >  =       &       #>>          ',
         '  ==~       =        #   =     #     +=    #   =        #          ==            ',
         '=============   ==========   =======>>=    ======================================',
+        ],
+        [
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                               #                 ',
+        '                                #                                                ',
+        '                                         #                                       ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                    %                            ',
+        '                                                                                 ',
+        '     >       >>  #                           ##                                  ',
+        '      ~           >                       =  ==     # >=              +          ',
+        '      ===>         >              =    >         >  =     >         #>>      &  >',
+        '       #             #   =    =#     +=        =        #   >  #          #     >',
+        '=============  >======  ==  =    ===>>=                       ===================',
+        ],
+        [
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '          %                                                                      ',
+        '              ===                                                                ',
+        '                   =                                                             ',
+        '           >         ===                                                         ',
+        '        =                =                       =#                              ',
+        '                           =                  ==  ==>                    # =     ',
+        '                    >=  ===>>                =         >               ===>      ',
+        '       #        # >            =          ===>         =>                        ',
+        '      ===>     ==                 =    >            =   ==             &        >',
+        '  ==        =    >       =      #   +=      #  =         >=#      ~            #>',
+        '====                    ========================         ========================',
+        ],
+        [
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '     >>    >                                                                     ',
+        '  =     =                                     #  =#%                             ',
+        '   =        #                                 =   ==>                            ',
+        '     >  #    >>                                        >                 =>      ',
+        '        =        >                       ===>         =              #           ',
+        '   =  ===>         >              =#   >         >  =       &       #>>          ',
+        '  ==~       =        #   =     #     +=    #   =        #          ==            ',
+        '=============   ==========   =======>>=    ======================================',
+        ],
+        [
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                               #                 ',
+        '                                #                                                ',
+        '                                         #                                       ',
+        '                                                                                 ',
+        '                                                                                 ',
+        '                                                    %                            ',
+        '                                                                                 ',
+        '     >       >>  #                           ##                                  ',
+        '      ~           >                       =  ==     # >=              +          ',
+        '      ===>         >              =    >         >  =     >         #>>      &  >',
+        '       #             #   =    =#     +=        =        #   >  #          #     >',
+        '=============  >======  ==  =    ===>>=                       ===================',
+        ]
     ]
 
     const levelConfig = {
@@ -49,7 +115,9 @@ export default function level () {
         '&': [sprite('portal'), 'portal', scale(2)]
     }
 
-    addLevel(map, levelConfig)
+    const randLevel = Math.floor(Math.random() * 5)
+
+    addLevel(map[Number(randLevel)], levelConfig)
 
     add([sprite('bg'), layer('bg')])
 
@@ -78,6 +146,7 @@ export default function level () {
     let SHIELDB = true
     let MAGE = 1
     let hasGem = false
+    let addMsg = true
 
     function attack(p) {
         const obj = add([sprite('mage'), scale(MAGE), pos(p), 'mage'])
@@ -101,8 +170,9 @@ export default function level () {
     player.overlaps('portal', () => {
         if (hasGem) {
             go('two')
-        } else {
-            go('one')
+        } else if (addMsg) {
+            addMsg = false
+            add([text('you need a key'), pos(player.pos.x, player.pos.y)])
         }
     })
 
@@ -146,7 +216,7 @@ export default function level () {
     })
 
     collides('mage', 'bad', (k, s) => {
-        s.move(2000, 0)
+        s.move(1000, 0)
         camShake(6)
 
         if (SHIELD) {
@@ -165,7 +235,7 @@ export default function level () {
     })
 
     collides('mage', 'badb', (k, s) => {
-        s.move(2000, 0)
+        s.move(1000, 0)
         camShake(6)
 
         if (SHIELDB) {

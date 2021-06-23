@@ -15,25 +15,40 @@ body {
     justify-content: space-around;
     font-family: 'CustomFont', monospace;
     text-align: center;
+    background-image: url('./imgs/bg.png');
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 img {
     width: 30px;
-    display: block;
-    margin: 0 auto;
+    margin-left: 10px;
 }
 
 canvas {
     display: none;
 }
 
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+h1 {
+    margin: 0;
+}
+
 @media (pointer: fine) {
     canvas {
         margin: 0 auto;
-        width: 1024px;
+        width: 800px;
+        height: 540px;
         display: block;
+        border: 8px ridge #666;
     }
-    footer, img {
+    footer, img, h1 {
         user-select: none;
     }
     .only {
