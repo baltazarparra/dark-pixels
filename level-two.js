@@ -62,10 +62,10 @@ export default function second () {
     let DIR = 'right'
     let SHIELD = true
     let SHIELDB = true
-    let MAGE = 1
+    let MAGE = 1.5
 
     function attack(p) {
-        const obj = add([sprite('mage'), scale(MAGE), pos(p), 'mage'])
+        const obj = add([sprite('mage'), scale(MAGE), pos(p.x, p.y - 10), 'mage'])
         wait(0.1, () => {
             destroy(obj)
             if (DIR === 'right') {

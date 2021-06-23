@@ -48,7 +48,7 @@ h1 {
         display: block;
         border: 8px ridge #666;
     }
-    footer, img, h1 {
+    footer, img, header {
         user-select: none;
     }
     .only {
