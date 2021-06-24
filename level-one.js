@@ -9,6 +9,7 @@ export default function level () {
     let MAGE = 1.5
     let hasGem = false
     let addMsg = true
+    let keyMsg = true
     let DASH_SPEED = 180
 
     layers(['bg', 'obj'], 'obj')
@@ -167,6 +168,10 @@ export default function level () {
     player.overlaps('gem', (gem) => {
         destroy(gem)
         hasGem = true
+        if (keyMsg) {
+            keyMsg = false
+            add([text('you got a key'), pos(player.pos.x, player.pos.y)])
+        }
     })
 
     player.overlaps('portal', () => {

@@ -92,14 +92,15 @@ export default function final () {
         camShake(10)
 
         if (DIR === 'right') {
-            s.move(5000, 0)
+            s.move(2000, 0)
         }
 
         if (DIR === 'left') {
-            s.move(-5000, 0)
+            s.move(-2000, 0)
         }
 
         if (SHIELD === 5) {
+            add([text('OUCH'), pos(player.pos.x, player.pos.y)])
             s.changeSprite('boss2')
             wait(1, () => {
                 SHIELD = SHIELD - 1
@@ -107,6 +108,7 @@ export default function final () {
         }
 
         if (SHIELD === 4) {
+            add([text('STOP DUDE!'), pos(player.pos.x, player.pos.y)])
             s.changeSprite('boss3')
             wait(1, () => {
                 SHIELD = SHIELD - 1
@@ -114,6 +116,7 @@ export default function final () {
         }
 
         if (SHIELD === 3) {
+            add([text('OMG'), pos(player.pos.x, player.pos.y)])
             s.changeSprite('boss4')
             wait(1, () => {
                 SHIELD = SHIELD - 1
@@ -121,6 +124,7 @@ export default function final () {
         }
 
         if (SHIELD === 2) {
+            add([text('AHHHHHHHHHHH'), pos(player.pos.x, player.pos.y)])
             s.changeSprite('boss5')
             wait(1, () => {
                 SHIELD = SHIELD - 1
@@ -128,6 +132,7 @@ export default function final () {
         }
 
         if (SHIELD === 1) {
+            add([text('FUUUUUUUUUUUUUCK'), pos(player.pos.x, player.pos.y)])
             destroy(s)
             go('win')
         }

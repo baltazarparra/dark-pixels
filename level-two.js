@@ -9,6 +9,8 @@ export default function second () {
     let MAGE = 1.5
     let hasGem = false
     let addMsg = true
+    let powerMsg = true
+    let keyMsg = true
     let DASH_SPEED = 180
     let TURN = 140
 
@@ -89,11 +91,19 @@ export default function second () {
     player.overlaps('gem', (gem) => {
         destroy(gem)
         hasGem = true
+        if (keyMsg) {
+            keyMsg = false
+            add([text('you got a key'), pos(player.pos.x, player.pos.y)])
+        }
     })
 
     player.overlaps('power', (power) => {
         destroy(power)
         MAGE = 2
+        if (powerMsg) {
+            powerMsg = false
+            add([text('sword UP'), pos(player.pos.x, player.pos.y)])
+        }
     })
 
     player.overlaps('portal', () => {
