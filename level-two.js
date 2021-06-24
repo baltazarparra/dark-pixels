@@ -69,7 +69,7 @@ export default function second () {
     function attack(p) {
         const obj = add([sprite('mage'), scale(MAGE), pos(p.x, p.y - 10), 'mage'])
 
-        wait(0.3, () => {
+        wait(1, () => {
             destroy(obj)
             if (DIR === 'right') player.changeSprite('dark')
             if (DIR === 'left') player.changeSprite('dark-reverse')
@@ -216,6 +216,11 @@ export default function second () {
         }
     })
 
+    action('mage', (m) => {
+        const value = 10
+        m.move(value, 0)
+    })
+
     keyDown('a', () => {
         DIR = 'left'
 
@@ -274,7 +279,7 @@ export default function second () {
             attack(player.pos.add(player.dir.scale(20)))
             if (DIR === 'right') player.changeSprite('dark-attack')
             if (DIR === 'left') player.changeSprite('dark-attack-reverse')
-            wait(0.6, () => {
+            wait(0.8, () => {
                 player.canAttack = true
             })
         }
@@ -286,7 +291,7 @@ export default function second () {
             attack(player.pos.add(player.dir.scale(20)))
             if (DIR === 'right') player.changeSprite('dark-attack')
             if (DIR === 'left') player.changeSprite('dark-attack-reverse')
-            wait(0.6, () => {
+            wait(0.8, () => {
                 player.canAttack = true
             })
         }
