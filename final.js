@@ -92,11 +92,11 @@ export default function final () {
         camShake(10)
 
         if (DIR === 'right') {
-            s.move(2000, 0)
+            s.move(1000, 0)
         }
 
         if (DIR === 'left') {
-            s.move(-2000, 0)
+            s.move(-1000, 0)
         }
 
         if (SHIELD === 5) {
