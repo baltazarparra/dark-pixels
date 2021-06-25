@@ -176,7 +176,7 @@ export default function level () {
 
     player.overlaps('portal', () => {
         if (hasGem) {
-            go('two')
+            go('next')
         } else if (addMsg) {
             addMsg = false
             add([text('you need a key'), pos(player.pos.x, player.pos.y)])

@@ -5,13 +5,13 @@ export default function die () {
     add([text('Click or press space'), origin('center'), pos(width()/2, height()/2)])
     
     mouseClick(() => {
-        wait(1, () => {
+        wait(0.5, () => {
             go('one')
         })
     })
 
     keyDown('space', () => {
-        wait(1, () => {
+        wait(0.5, () => {
             go('one')
         })
     })

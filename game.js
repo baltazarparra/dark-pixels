@@ -6,6 +6,7 @@ import WIN from './win.js'
 import DIE from './die.js'
 import FINAL from './final.js'
 import LEVEL_TWO from './level-two.js'
+import NEXT from './next.js'
 
 loadRoot('./imgs/')
 loadSprite('mage', 'mage.png')
@@ -36,5 +37,6 @@ scene('two', LEVEL_TWO)
 scene('final', FINAL)
 scene('win', WIN)
 scene('die', DIE)
+scene('next', NEXT)
 
 start('start') 
