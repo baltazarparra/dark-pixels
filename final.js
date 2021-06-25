@@ -90,6 +90,7 @@ export default function final () {
 
     collides('mage', 'ghost', (k, s) => {
         camShake(10)
+        s.jump(300, 100)
 
         if (DIR === 'right') {
             s.move(1000, 0)
